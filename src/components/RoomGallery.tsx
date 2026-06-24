@@ -103,8 +103,11 @@ export default function RoomGallery({ items }: RoomGalleryProps) {
                   <img 
                     src={item.imageUrl} 
                     alt={item.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+                      index === 0 ? 'border-2 border-[#e3e7f1]' : ''
+                    }`}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                   />
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
