@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'himanshusharmasharmaa01@gmail.com' ||
+        request.auth.token.email == 'admin@aadarsh.com'
+      );
+    }
+
+    // Rooms rules
+    match /rooms/{roomId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Gallery rules
+    match /gallery/{galleryId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Testimonials rules
+    match /testimonials/{testimonialId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Menus rules
+    match /menus/{menuId} {
+      allow read, create: if true;
+      allow update, delete: if isAdmin();
+    }
+
+    // Inquiries rules
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

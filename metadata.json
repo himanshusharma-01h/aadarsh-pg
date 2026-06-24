@@ -1,0 +1,6 @@
+{
+  "name": "Aadarsh PG & Hostel",
+  "description": "Premium student PG and hostel accommodation near Vivekananda Global University (VGU), Jaipur, Rajasthan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

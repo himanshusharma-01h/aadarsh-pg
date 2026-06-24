@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "Room": {
+      "title": "Room Pricing and Info",
+      "description": "Represents a sharing room type at Aadarsh PG & Hostel",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string", "enum": ["double", "triple"] },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "available": { "type": "boolean" },
+        "features": { "type": "array" },
+        "description": { "type": "string" },
+        "image": { "type": "string" }
+      },
+      "required": ["id", "type", "name", "price", "available", "features", "description", "image"]
+    },
+    "GalleryItem": {
+      "title": "Gallery Image",
+      "description": "Represents an image in the hostel gallery categorised by room type, facilities, etc.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "category": { "type": "string", "enum": ["double", "triple", "bathrooms", "facilities"] },
+        "imageUrl": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["id", "category", "imageUrl", "title"]
+    },
+    "Testimonial": {
+      "title": "Student Review",
+      "description": "Represents a testimonial or review from a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "rating": { "type": "number" },
+        "review": { "type": "string" },
+        "role": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["id", "name", "rating", "review", "role", "date"]
+    },
+    "Inquiry": {
+      "title": "Student Booking Inquiry",
+      "description": "Represents a booking or visit inquiry made by a student",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "city": { "type": "string" },
+        "roomType": { "type": "string" },
+        "moveInDate": { "type": "string" },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Contacted", "Closed"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "phone", "city", "roomType", "moveInDate", "status", "createdAt"]
+    },
+    "Menu": {
+      "title": "Mess Weekly Menu",
+      "description": "Represents the weekly food menu for a specific season",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "days": { "type": "object" }
+      },
+      "required": ["id", "name", "days"]
+    }
+  },
+  "firestore": {
+    "/rooms/{roomId}": {
+      "schema": { "$ref": "#/entities/Room" },
+      "description": "Hostel room listings and current details"
+    },
+    "/gallery/{galleryId}": {
+      "schema": { "$ref": "#/entities/GalleryItem" },
+      "description": "Gallery images categorized by sections"
+    },
+    "/testimonials/{testimonialId}": {
+      "schema": { "$ref": "#/entities/Testimonial" },
+      "description": "Testimonials and reviews displayed on the website"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": { "$ref": "#/entities/Inquiry" },
+      "description": "Hostel inquiry and booking requests"
+    },
+    "/menus/{menuId}": {
+      "schema": { "$ref": "#/entities/Menu" },
+      "description": "Weekly mess food menus for summer and winter"
+    }
+  }
+}
