@@ -9,6 +9,9 @@ import {
 import { db } from '../firebase';
 import { Room, GalleryItem, Testimonial, Inquiry, Menu, DayMenu } from '../types';
 
+import doubleRoomImg from '../assets/images/regenerated_image_1782386895173.png';
+import tripleRoomImg from '../assets/images/regenerated_image_1782386902389.jpg';
+
 interface AdminDashboardProps {
   rooms: Room[];
   galleryItems: GalleryItem[];
@@ -561,11 +564,20 @@ export default function AdminDashboard({
                     ) : (
                       <div className="grid md:grid-cols-12 gap-6 items-center">
                         <div className="md:col-span-3">
-                          <img 
-                            src={room.image} 
-                            alt={room.name} 
-                            className="w-full h-36 object-cover rounded-2xl border border-slate-100 dark:border-slate-800"
-                          />
+                          {(() => {
+                            const isTriple = room.type === 'triple';
+                            const defaultImg = isTriple ? tripleRoomImg : doubleRoomImg;
+                            const isUnsplash = room.image?.includes('unsplash.com');
+                            const isRemote = room.image?.startsWith('http') || room.image?.startsWith('data:');
+                            const roomImage = (isRemote && !isUnsplash) ? room.image : defaultImg;
+                            return (
+                              <img 
+                                src={roomImage} 
+                                alt={room.name} 
+                                className="w-full h-36 object-cover rounded-2xl border border-slate-100 dark:border-slate-800"
+                              />
+                            );
+                          })()}
                         </div>
                         <div className="md:col-span-9 space-y-2">
                           <div className="flex items-baseline gap-2">

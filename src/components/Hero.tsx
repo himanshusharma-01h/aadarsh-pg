@@ -1,5 +1,6 @@
 import { Phone, CalendarCheck, MessageCircle, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
+import heroImg from '../assets/images/regenerated_image_1782383400452.png';
 
 export default function Hero() {
   const primaryPhone = "tel:+917023107808";
@@ -121,7 +122,7 @@ export default function Hero() {
               
               <div className="relative bg-white dark:bg-slate-900 p-2.5 rounded-3xl shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800">
                 <img 
-                  src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=1200"
+                  src={heroImg}
                   alt="Aadarsh PG Double Sharing Room" 
                   className="rounded-2xl w-full h-[320px] sm:h-[400px] object-cover"
                   loading="eager"

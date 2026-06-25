@@ -2,6 +2,9 @@ import { Phone, MessageCircle, CalendarDays, CheckCircle2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Room } from '../types';
 
+import doubleRoomImg from '../assets/images/regenerated_image_1782386895173.png';
+import tripleRoomImg from '../assets/images/regenerated_image_1782386902389.jpg';
+
 interface RoomPricingProps {
   rooms: Room[];
   onSelectRoom: (roomType: string) => void;
@@ -46,6 +49,14 @@ export default function RoomPricing({ rooms, onSelectRoom }: RoomPricingProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {sortedRooms.map((room) => {
             const isTriple = room.type === 'triple';
+            const defaultImg = isTriple ? tripleRoomImg : doubleRoomImg;
+            
+            // If the image is a custom third-party URL (and not Unsplash placeholder), use it.
+            // Otherwise, use the new high-quality local static asset.
+            const isUnsplash = room.image?.includes('unsplash.com');
+            const isRemote = room.image?.startsWith('http') || room.image?.startsWith('data:');
+            const roomImage = (isRemote && !isUnsplash) ? room.image : defaultImg;
+
             return (
               <motion.div
                 key={room.id}
@@ -70,10 +81,11 @@ export default function RoomPricing({ rooms, onSelectRoom }: RoomPricingProps) {
                 <div>
                   <div className="relative h-60 w-full overflow-hidden">
                     <img 
-                      src={room.image} 
+                      src={roomImage} 
                       alt={room.name} 
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                       loading="lazy"
+                      referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                     <div className="absolute bottom-5 left-6 text-white">

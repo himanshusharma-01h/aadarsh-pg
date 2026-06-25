@@ -1,6 +1,16 @@
-import { collection, getDocs, doc, setDoc, writeBatch } from 'firebase/firestore';
+import { collection, getDocs, doc, setDoc, updateDoc, writeBatch } from 'firebase/firestore';
 import { db } from './firebase';
 import { Room, GalleryItem, Testimonial, Menu } from './types';
+
+import doubleRoomImg from './assets/images/regenerated_image_1782386895173.png';
+import tripleRoomImg from './assets/images/regenerated_image_1782386902389.jpg';
+
+import galleryDouble1Img from './assets/images/regenerated_image_1782388499695.jpg';
+import galleryTriple1Img from './assets/images/regenerated_image_1782383430127.png';
+import galleryBath2Img from './assets/images/regenerated_image_1782383434981.png';
+import galleryFac1Img from './assets/images/regenerated_image_1782383459554.png';
+import galleryFac2Img from './assets/images/regenerated_image_1782383450264.jpg';
+import galleryFac3Img from './assets/images/regenerated_image_1782383454117.jpg';
 
 const INITIAL_ROOMS: Room[] = [
   {
@@ -18,7 +28,7 @@ const INITIAL_ROOMS: Room[] = [
       '3 Hygienic Meals (Breakfast, Lunch & Dinner)'
     ],
     description: 'Perfect balance of privacy and companionship. Comes with individual beds, study tables, wardrobes, and separate power sockets.',
-    image: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800'
+    image: doubleRoomImg
   },
   {
     id: 'triple-sharing',
@@ -36,7 +46,7 @@ const INITIAL_ROOMS: Room[] = [
       'Spacious Shared Wardrobes'
     ],
     description: 'Our most popular choice for students looking for an affordable, highly social, and secure lodging experience near VGU Jaipur.',
-    image: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800'
+    image: tripleRoomImg
   }
 ];
 
@@ -44,7 +54,7 @@ const INITIAL_GALLERY: GalleryItem[] = [
   {
     id: 'g-double-1',
     category: 'double',
-    imageUrl: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryDouble1Img,
     title: 'Double Sharing Bedroom Layout',
     description: 'Spacious setup with dual study tables and beds'
   },
@@ -58,7 +68,7 @@ const INITIAL_GALLERY: GalleryItem[] = [
   {
     id: 'g-triple-1',
     category: 'triple',
-    imageUrl: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryTriple1Img,
     title: 'Triple Sharing Bed Configuration',
     description: 'Comfortable and affordable shared layout'
   },
@@ -79,28 +89,28 @@ const INITIAL_GALLERY: GalleryItem[] = [
   {
     id: 'g-bath-2',
     category: 'bathrooms',
-    imageUrl: 'https://images.unsplash.com/photo-1620626011761-996317b6979a?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryBath2Img,
     title: 'Clean Hot Water Facilities',
     description: 'Geyser fittings installed for cold winter mornings'
   },
   {
     id: 'g-fac-1',
     category: 'facilities',
-    imageUrl: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryFac1Img,
     title: 'Study Environment',
     description: 'Quiet learning space ideal for exam preparation'
   },
   {
     id: 'g-fac-2',
     category: 'facilities',
-    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryFac2Img,
     title: 'CCTV Secure Campus',
     description: '24/7 security monitoring for complete peace of mind'
   },
   {
     id: 'g-fac-3',
     category: 'facilities',
-    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800',
+    imageUrl: galleryFac3Img,
     title: 'Mess and Dining Hall',
     description: 'Spacious dining area where hygienic fresh food is served'
   }
@@ -171,6 +181,16 @@ export async function seedDatabaseIfNeeded() {
       for (const room of INITIAL_ROOMS) {
         await setDoc(doc(db, 'rooms', room.id), room);
       }
+    } else {
+      console.log('Synchronizing room images...');
+      for (const room of INITIAL_ROOMS) {
+        const roomRef = doc(db, 'rooms', room.id);
+        await updateDoc(roomRef, {
+          image: room.image
+        }).catch(() => {
+          setDoc(roomRef, room);
+        });
+      }
     }
 
     // Check Gallery
@@ -179,6 +199,16 @@ export async function seedDatabaseIfNeeded() {
       console.log('Seeding initial gallery items...');
       for (const item of INITIAL_GALLERY) {
         await setDoc(doc(db, 'gallery', item.id), item);
+      }
+    } else {
+      console.log('Synchronizing gallery images...');
+      for (const item of INITIAL_GALLERY) {
+        const itemRef = doc(db, 'gallery', item.id);
+        await updateDoc(itemRef, {
+          imageUrl: item.imageUrl
+        }).catch(() => {
+          setDoc(itemRef, item);
+        });
       }
     }
 
